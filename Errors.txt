@@ -1,0 +1,2 @@
+Build failed:
+[09-Jun-25 5:15:25 AM, C:\Users\Admin\Desktop\ExileApi-Compiled-3.25-phrecia-2\Plugins\Source\PickItV2\PickIt.cs(604, 21)] CS0111: Type 'PickIt' already defines a member called 'GetContainer2DArray' with the same parameter types

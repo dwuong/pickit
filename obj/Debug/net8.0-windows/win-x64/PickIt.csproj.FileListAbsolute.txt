@@ -1,0 +1,16 @@
+C:\Users\Admin\Desktop\ExileApi-Compiled-3.25-phrecia-2\Plugins\Temp\PickItV2\PickIt.deps.json
+C:\Users\Admin\Desktop\ExileApi-Compiled-3.25-phrecia-2\Plugins\Temp\PickItV2\PickIt.runtimeconfig.json
+C:\Users\Admin\Desktop\ExileApi-Compiled-3.25-phrecia-2\Plugins\Temp\PickItV2\PickIt.dll
+C:\Users\Admin\Desktop\ExileApi-Compiled-3.25-phrecia-2\Plugins\Source\PickItV2\obj\Debug\net8.0-windows\win-x64\PickIt.csproj.AssemblyReference.cache
+C:\Users\Admin\Desktop\ExileApi-Compiled-3.25-phrecia-2\Plugins\Source\PickItV2\obj\Debug\net8.0-windows\win-x64\PickIt.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Admin\Desktop\ExileApi-Compiled-3.25-phrecia-2\Plugins\Source\PickItV2\obj\Debug\net8.0-windows\win-x64\PickIt.AssemblyInfoInputs.cache
+C:\Users\Admin\Desktop\ExileApi-Compiled-3.25-phrecia-2\Plugins\Source\PickItV2\obj\Debug\net8.0-windows\win-x64\PickIt.AssemblyInfo.cs
+C:\Users\Admin\Desktop\ExileApi-Compiled-3.25-phrecia-2\Plugins\Source\PickItV2\obj\Debug\net8.0-windows\win-x64\PickIt.csproj.CoreCompileInputs.cache
+C:\Users\Admin\Desktop\ExileApi-Compiled-3.25-phrecia-2\Plugins\Source\PickItV2\obj\Debug\net8.0-windows\win-x64\PickIt.sourcelink.json
+C:\Users\Admin\Desktop\ExileApi-Compiled-3.25-phrecia-2\Plugins\Source\PickItV2\obj\Debug\net8.0-windows\win-x64\PickIt.csproj.CopyComplete
+C:\Users\Admin\Desktop\ExileApi-Compiled-3.25-phrecia-2\Plugins\Source\PickItV2\obj\Debug\net8.0-windows\win-x64\PickIt.dll
+C:\Users\Admin\Desktop\ExileApi-Compiled-3.25-phrecia-2\Plugins\Source\PickItV2\obj\Debug\net8.0-windows\win-x64\refint\PickIt.dll
+C:\Users\Admin\Desktop\ExileApi-Compiled-3.25-phrecia-2\Plugins\Source\PickItV2\obj\Debug\net8.0-windows\win-x64\PickIt.pdb
+C:\Users\Admin\Desktop\ExileApi-Compiled-3.25-phrecia-2\Plugins\Source\PickItV2\obj\Debug\net8.0-windows\win-x64\PickIt.genruntimeconfig.cache
+C:\Users\Admin\Desktop\ExileApi-Compiled-3.25-phrecia-2\Plugins\Temp\PickItV2\PickIt.pdb
+C:\Users\Admin\Desktop\ExileApi-Compiled-3.25-phrecia-2\Plugins\Source\PickItV2\obj\Debug\net8.0-windows\win-x64\ref\PickIt.dll
