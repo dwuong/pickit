@@ -48,7 +48,7 @@ public partial class PickIt : BaseSettingsPlugin<PickItSettings>
         Name = "PickIt With Linq";
         // Initialize the inventory slots cache, relying on the GetContainer2DArray method defined later.
         // The actual implementation of GetContainer2DArray should be in another partial class file or provided by the user.
-        _inventorySlotsCache = new FrameCache<bool[,]>(() => GetContainer2DArray(_inventoryItems)); 
+        _inventorySlotsCache = new FrameCache<bool[,]>(() => GetContainer2DArray(_inventoryItems));
         _chestLabels = new TimeCache<List<LabelOnGround>>(UpdateChestList, 200);
         _corpseLabels = new TimeCache<List<LabelOnGround>>(UpdateCorpseList, 200);
         _portalLabel = new TimeCache<LabelOnGround>(() => GetLabel(@"^Metadata/(MiscellaneousObjects|Effects/Microtransactions)/.*Portal"), 200);
@@ -95,6 +95,7 @@ public partial class PickIt : BaseSettingsPlugin<PickItSettings>
             Input.GetKeyState(Keys.Escape))
         {
             _pluginBridgeModeOverride = false;
+            DebugWindow.LogMsg("Lazy Looting: OFF (Stopped)", 5); // Debug logging
             return WorkMode.Stop;
         }
 
@@ -110,16 +111,19 @@ public partial class PickIt : BaseSettingsPlugin<PickItSettings>
         // If the manual pick-up key is pressed or plugin bridge mode is overridden, operate in manual mode.
         if (Input.GetKeyState(Settings.PickUpKey.Value) || _pluginBridgeModeOverride)
         {
+            DebugWindow.LogMsg("Lazy Looting: OFF (Manual Mode)", 5); // Debug logging
             return WorkMode.Manual;
         }
 
         // If lazy looting is enabled and permissible, operate in lazy mode.
         if (CanLazyLoot())
         {
+            DebugWindow.LogMsg("Lazy Looting: ON", 5); // Debug logging
             return WorkMode.Lazy;
         }
 
         // Otherwise, stop operations.
+        DebugWindow.LogMsg("Lazy Looting: OFF (Conditions not met)", 5); // Debug logging
         return WorkMode.Stop;
     }
 
@@ -141,7 +145,7 @@ public partial class PickIt : BaseSettingsPlugin<PickItSettings>
                 !Input.IsKeyDown(Keys.LButton))
             {
                 // If a valid item is hovered and it's okay to click (determined by OkayToClick method).
-                if (hoverItemIcon.Item != null && OkayToClick()) 
+                if (hoverItemIcon.Item != null && OkayToClick())
                 {
                     // Find the ground item label corresponding to the hovered item icon.
                     var groundItem = GameController.IngameState.IngameUi.ItemsOnGroundLabelElement.VisibleGroundItemLabels
@@ -225,7 +229,7 @@ public partial class PickIt : BaseSettingsPlugin<PickItSettings>
 
         // Begin the ImGui window.
         if (ImGui.Begin($"{Name}##InventoryCellMap", ref opened,
-                Settings.MoveInventoryView.Value ? moveableFlag : nonMoveableFlag))
+            Settings.MoveInventoryView.Value ? moveableFlag : nonMoveableFlag))
         {
             var numb = 0;
             // Iterate through a 5x12 grid representing inventory cells.
@@ -310,21 +314,35 @@ public partial class PickIt : BaseSettingsPlugin<PickItSettings>
     // Determines if lazy looting is currently allowed.
     private bool CanLazyLoot()
     {
-        if (!Settings.LazyLooting) return false; // Lazy looting is disabled.
-        if (_disableLazyLootingTill > DateTime.Now) return false; // Lazy looting is temporarily paused.
+        if (!Settings.LazyLooting)
+        {
+            DebugWindow.LogMsg("CanLazyLoot: Lazy Looting setting is OFF", 5); // Debug logging
+            return false; // Lazy looting is disabled.
+        }
+        if (_disableLazyLootingTill > DateTime.Now)
+        {
+            DebugWindow.LogMsg($"CanLazyLoot: Lazy Looting paused until {_disableLazyLootingTill:HH:mm:ss}", 5); // Debug logging
+            return false; // Lazy looting is temporarily paused.
+        }
         try
         {
             // If "No Lazy Looting While Enemy Close" is enabled, check for nearby hostile monsters.
             if (Settings.NoLazyLootingWhileEnemyClose && GameController.EntityListWrapper.ValidEntitiesByType[EntityType.Monster]
                     .Any(x => x?.GetComponent<Monster>() != null && x.IsValid && x.IsHostile && x.IsAlive
                               && !x.IsHidden && !x.Path.Contains("ElementalSummoned")
-                              && Vector3.Distance(GameController.Player.PosNum, x.GetComponent<Render>().PosNum) < Settings.PickupRange)) return false;
+                              && Vector3.Distance(GameController.Player.PosNum, x.GetComponent<Render>().PosNum) < Settings.PickupRange))
+            {
+                DebugWindow.LogMsg("CanLazyLoot: Enemy too close, lazy looting disabled.", 5); // Debug logging
+                return false;
+            }
         }
         catch (NullReferenceException)
         {
             // Handle potential null reference exceptions gracefully.
+            DebugWindow.LogMsg("CanLazyLoot: NullReferenceException caught while checking for enemies.", 5); // Debug logging
         }
 
+        DebugWindow.LogMsg("CanLazyLoot: All conditions met, lazy looting allowed.", 5); // Debug logging
         return true; // Lazy looting is allowed.
     }
 
@@ -511,8 +529,6 @@ public partial class PickIt : BaseSettingsPlugin<PickItSettings>
                 }
             }
 
-            // Calculate a random click position within the label's client rect.
-            var position = label.GetClientRect().ClickRandomNum(5, 3) + GameController.Window.GetWindowRectangleTimeCache.TopLeft.ToVector2Num();
             // If enough time has passed since the last click.
             if (_sinceLastClick.ElapsedMilliseconds > Settings.PauseBetweenClicks)
             {
@@ -593,7 +609,7 @@ public partial class PickIt : BaseSettingsPlugin<PickItSettings>
         // to check if the item can fit in the player's inventory.
         // This might involve checking the item's size against available inventory slots
         // and the 'InventorySlots' array (which is populated by GetContainer2DArray).
-        return true; 
+        return true;
     }
 
     /// <summary>
@@ -608,6 +624,40 @@ public partial class PickIt : BaseSettingsPlugin<PickItSettings>
         // to determine if it's okay to click.
         // This could involve checks like whether the game window is active,
         // if there are any blocking UI elements, etc.
-        return true; 
+        return true;
+    }
+
+    // This method is missing from your provided code, but is referenced by _inventorySlotsCache.
+    // You will need to provide its implementation.
+    private bool[,] GetContainer2DArray(ServerInventory inventory)
+    {
+        // Placeholder implementation. You will need to replace this with actual logic
+        // to populate a 2D array representing your inventory slots based on the provided ServerInventory object.
+        // For example, you might iterate through inventory.ReadCells() and mark occupied slots.
+        var inventorySlots = new bool[5, 12]; // Assuming a 5x12 inventory grid
+        if (inventory != null && inventory.IsValid)
+        {
+            foreach (var item in inventory.ReadItems())
+            {
+                if (item.IsValid && item.InventPosX >= 0 && item.InventPosX < 12 &&
+                    item.InventPosY >= 0 && item.InventPosY < 5)
+                {
+                    // Mark the slot as occupied.
+                    // This simple example just marks the top-left cell of the item.
+                    // For accurate representation, you'd need to mark all cells the item occupies based on its width and height.
+                    for (int y = 0; y < item.ItemHeight; y++)
+                    {
+                        for (int x = 0; x < item.ItemWidth; x++)
+                        {
+                            if (item.InventPosY + y < 5 && item.InventPosX + x < 12)
+                            {
+                                inventorySlots[item.InventPosY + y, item.InventPosX + x] = true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return inventorySlots;
     }
 }
